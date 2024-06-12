@@ -3,6 +3,11 @@ document.addEventListener('DOMContentLoaded', loadDonors);
 document.getElementById('donate-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
+    if (!validateConditions()) {
+        alert("You can't donate blood as you do not meet all the conditions.");
+        return;
+    }
+
     const name = document.getElementById('name').value;
     const bloodGroup = document.getElementById('blood-group').value;
     const contact = document.getElementById('contact').value;
@@ -22,6 +27,16 @@ document.getElementById('donate-form').addEventListener('submit', function(e) {
     this.reset();
 });
 
+function validateConditions() {
+    const age = document.getElementById('age').checked;
+    const weight = document.getElementById('weight').checked;
+    const health = document.getElementById('health').checked;
+    const donationInterval = document.getElementById('donation-interval').checked;
+    const disease = document.getElementById('disease').checked;
+
+    return age && weight && health && donationInterval && disease;
+}
+
 function loadDonors() {
     const donors = getDonors();
     donors.forEach(donor => addDonorToList(donor));
@@ -30,7 +45,10 @@ function loadDonors() {
 function addDonorToList(donor) {
     const donorList = document.getElementById('donor-list');
     const listItem = document.createElement('li');
-    listItem.textContent = `${donor.name} - ${donor.bloodGroup} - ${donor.contact} - ${donor.address} - ${donor.city}`;
+    listItem.innerHTML = `
+        ${donor.name} - ${donor.bloodGroup} - ${donor.contact} - ${donor.address} - ${donor.city}
+        <button class="delete-btn" onclick="deleteDonor(this)">Delete</button>
+    `;
     donorList.appendChild(listItem);
 }
 
@@ -43,6 +61,33 @@ function saveDonor(donor) {
 function getDonors() {
     const donors = localStorage.getItem('donors');
     return donors ? JSON.parse(donors) : [];
+}
+
+function deleteDonor(button) {
+    const listItem = button.parentElement;
+    const donorInfo = listItem.textContent.replace('Delete', '').trim().split(' - ');
+    const donor = {
+        name: donorInfo[0],
+        bloodGroup: donorInfo[1],
+        contact: donorInfo[2],
+        address: donorInfo[3],
+        city: donorInfo[4]
+    };
+
+    const donors = getDonors();
+    const index = donors.findIndex(d => 
+        d.name === donor.name && 
+        d.bloodGroup === donor.bloodGroup && 
+        d.contact === donor.contact && 
+        d.address === donor.address && 
+        d.city === donor.city
+    );
+    if (index !== -1) {
+        donors.splice(index, 1);
+        localStorage.setItem('donors', JSON.stringify(donors));
+    }
+
+    listItem.remove();
 }
 
 document.getElementById('search').addEventListener('input', function() {

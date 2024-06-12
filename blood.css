@@ -14,7 +14,8 @@ header {
 
 main {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
     padding: 2rem;
 }
 
@@ -23,11 +24,21 @@ section {
     padding: 1rem;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    width: 45%;
+    width: 80%;
+    margin-bottom: 2rem;
 }
 
 h2 {
     color: #e74c3c;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 0.5rem;
 }
 
 form {
@@ -64,37 +75,32 @@ button:hover {
 #donor-list li {
     background-color: #f9f9f9;
     padding: 1rem;
-    border-bottom: 1px solid #ddd;
-}
-
-#donor-list li:last-child {
-    border-bottom: none;
-}
-/* CSS */
-
-/* Add this at the end of your existing CSS */
-
-/* Improved styling for the donor list */
-#donor-list {
-    list-style: none;
-    padding: 0;
-}
-
-#donor-list li {
-    background-color: #f9f9f9;
-    padding: 1rem;
     border-radius: 5px;
     margin-bottom: 0.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #donor-list li:last-child {
     margin-bottom: 0;
 }
 
-/* Hover effect on donor list items */
 #donor-list li:hover {
     background-color: #e0e0e0;
     cursor: pointer;
 }
 
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}

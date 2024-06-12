@@ -26,6 +26,7 @@ body {
 .container {
     width: 100%;
     padding: 20px;
+    margin-top: 100px; /* To ensure content isn't hidden under the fixed header */
 }
 
 header {
@@ -93,29 +94,27 @@ header .signup-button:hover {
     background-color: #09d109b0;
 }
 
-.container .content {
+.post-form-container {
     width: 100%;
-    height: 90%;
-    padding-top: 100px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
-.content .one {
-    width: 60%;
-    padding: 60px 100px;
+.post-form-container h1 {
+    font-size: 24px;
 }
 
-.content .one h1 {
-    font-size: 50px;
-}
-
-.content .one p {
+.post-form-container p {
     font-size: 16px;
     padding: 10px 0;
     color: rgba(0, 0, 0, 0.728);
 }
 
-.content input[type="text"],
-.content input[type="file"] {
+.post-form-container input[type="text"],
+.post-form-container input[type="file"] {
     padding: 10px;
     border: 1px solid #ced4da;
     border-radius: 5px;
@@ -123,7 +122,7 @@ header .signup-button:hover {
     font-size: 16px;
 }
 
-.content button[type="submit"] {
+.post-form-container button[type="submit"] {
     padding: 10px 20px;
     background-color: #09d109;
     color: white;
@@ -136,24 +135,13 @@ header .signup-button:hover {
     transition: all 0.7s;
 }
 
-.content button[type="submit"]:hover {
+.post-form-container button[type="submit"]:hover {
     transform: scale(1.09);
     background-color: #09d109b0;
 }
 
-.content .two {
-    width: 40%;
-    position: relative;
-}
-
-.content .two .toy {
-    width: 370px;
-    left: 70px;
-}
-
 .posts-container {
     width: 100%;
-    margin-top: 20px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #fff;

@@ -8,10 +8,20 @@
 </head>
 <body>
     <header>
-        <a href="main.html" class="nav-link">Home</a>
+        <a href="index.html" class="nav-link">Home</a>
         <h1>Blood Donation</h1>
     </header>
     <main>
+        <section id="conditions-section">
+            <h2>Who Can Donate Blood?</h2>
+            <form id="conditions-form">
+                <label><input type="checkbox" id="age" required> You are aged between 18 and 65.</label><br>
+                <label><input type="checkbox" id="weight" required> You weigh at least 50 kg.</label><br>
+                <label><input type="checkbox" id="health" required> You are in good health at the time of donation.</label><br>
+                <label><input type="checkbox" id="donation-interval" required> You have not donated blood in the last 12 weeks (for men) or 16 weeks (for women).</label><br>
+                <label><input type="checkbox" id="disease" required> You do not have any infections or diseases.</label>
+            </form>
+        </section>
         <section id="donate-section">
             <h2>Donate Blood</h2>
             <form id="donate-form">
@@ -35,6 +45,7 @@
                 <label for="city">City:</label>
                 <input type="text" id="city" required>
                 <button type="submit">Donate</button>
+                <button type="reset">Clear</button>
             </form>
         </section>
         <section id="list-section">

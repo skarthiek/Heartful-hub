@@ -1,8 +1,10 @@
-function showMore(id) {
-    var element = document.getElementById(id);
-    if (element.classList.contains('hidden')) {
-        element.classList.remove('hidden');
-    } else {
-        element.classList.add('hidden');
-    }
-}
+// scripts.js
+
+document.querySelectorAll('nav ul li a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});

@@ -1,74 +1,71 @@
-document.addEventListener('DOMContentLoaded', loadItems);
-document.getElementById('volunteer-form').addEventListener('submit', addItem);
-
-function loadItems() {
+document.addEventListener('DOMContentLoaded', () => {
+    const volunteerForm = document.getElementById('volunteer-form');
+    const donorForm = document.getElementById('donor-form');
     const itemsList = document.getElementById('items-list');
-    const items = JSON.parse(localStorage.getItem('items')) || [];
-    
-    items.forEach((item, index) => {
-        const li = createListItem(item, index);
-        itemsList.appendChild(li);
-    });
-}
 
-function addItem(event) {
-    event.preventDefault();
+    const loadItems = () => {
+        const items = JSON.parse(localStorage.getItem('items')) || [];
+        itemsList.innerHTML = '';
+        items.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span>${item.item} - ${item.count} (Address: ${item.address})</span>
+                <button onclick="verifyDonation(${index})">Verify</button>
+            `;
+            itemsList.appendChild(li);
+        });
+    };
 
-    const item = document.getElementById('item').value;
-    const quantity = parseInt(document.getElementById('quantity').value, 10);
-    const address = document.getElementById('address').value;
-
-    const items = JSON.parse(localStorage.getItem('items')) || [];
-    const newItem = { name: item, quantity: quantity, address: address };
-    items.push(newItem);
-    localStorage.setItem('items', JSON.stringify(items));
-    
-    const itemsList = document.getElementById('items-list');
-    const li = createListItem(newItem, items.length - 1);
-    
-    itemsList.appendChild(li);
-
-    document.getElementById('volunteer-form').reset();
-}
-
-function createListItem(item, index) {
-    const li = document.createElement('li');
-    li.innerHTML = `<span>Item:</span> ${item.name}, <span>Quantity:</span> ${item.quantity}, <span>Address:</span> ${item.address}`;
-    
-    const donateForm = document.createElement('div');
-    donateForm.className = 'donate-form';
-    donateForm.innerHTML = `
-        <input type="number" min="1" max="${item.quantity}" placeholder="Donate">
-        <button onclick="donateItem(${index})">Donate</button>
-    `;
-    li.appendChild(donateForm);
-    
-    return li;
-}
-
-function donateItem(index) {
-    const items = JSON.parse(localStorage.getItem('items')) || [];
-    const donationAmount = parseInt(event.target.previousElementSibling.value, 10);
-    
-    if (!isNaN(donationAmount) && donationAmount > 0 && donationAmount <= items[index].quantity) {
-        items[index].quantity -= donationAmount;
-        
-        if (items[index].quantity === 0) {
-            items.splice(index, 1);
-        }
-        
+    const saveItems = (items) => {
         localStorage.setItem('items', JSON.stringify(items));
-        updateItemsList();
-    }
-}
+        loadItems();
+    };
 
-function updateItemsList() {
-    const itemsList = document.getElementById('items-list');
-    itemsList.innerHTML = '';
-    const items = JSON.parse(localStorage.getItem('items')) || [];
-    
-    items.forEach((item, index) => {
-        const li = createListItem(item, index);
-        itemsList.appendChild(li);
+    volunteerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const item = document.getElementById('item').value;
+        const count = parseInt(document.getElementById('count').value);
+        const address = document.getElementById('address').value;
+
+        const items = JSON.parse(localStorage.getItem('items')) || [];
+        items.push({ item, count, address });
+        saveItems(items);
+
+        volunteerForm.reset();
     });
-}
+
+    donorForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const donorName = document.getElementById('donor-name').value;
+        const donateItem = document.getElementById('donate-item').value;
+        const donateCount = parseInt(document.getElementById('donate-count').value);
+        const phone = document.getElementById('phone').value;
+
+        const items = JSON.parse(localStorage.getItem('items')) || [];
+        const itemIndex = items.findIndex(item => item.item === donateItem);
+
+        if (itemIndex > -1 && items[itemIndex].count >= donateCount) {
+            items[itemIndex].count -= donateCount;
+
+            if (items[itemIndex].count === 0) {
+                items.splice(itemIndex, 1);
+            }
+
+            saveItems(items);
+
+            alert(`Thank you, ${donorName}! Your donation of ${donateCount} ${donateItem}(s) has been received.`);
+        } else {
+            alert('Item not available or insufficient quantity.');
+        }
+
+        donorForm.reset();
+    });
+
+    window.verifyDonation = (index) => {
+        const items = JSON.parse(localStorage.getItem('items')) || [];
+        items.splice(index, 1);
+        saveItems(items);
+    };
+
+    loadItems();
+});
